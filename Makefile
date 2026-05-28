@@ -96,11 +96,11 @@ test: ## Запустить тесты
 	$(PHP_FPM) php artisan test
 	@echo "$(GREEN)✅ Тесты выполнены$(NC)"
 
-fresh: down-v build up composer-install migrate permissions restart-workers ## Полная переустановка проекта (очистка БД)
+fresh: down-v build up composer-install migrate permissions restart-workers rabbitmq-queues ## Полная переустановка проекта (очистка БД)
 	@echo "$(GREEN)🎉 Проект полностью переустановлен!$(NC)"
 	@echo "$(GREEN)API доступно по адресу: http://localhost/api/notifications$(NC)"
 
-init: build up composer-install migrate permissions restart-workers ## Первоначальная настройка проекта
+init: build up composer-install migrate permissions restart-workers rabbitmq-queues ## Первоначальная настройка проекта
 	@echo "$(GREEN)🎉 Проект готов к работе!$(NC)"
 	@echo "$(GREEN)API доступно по адресу: http://localhost/api/notifications$(NC)"
 
