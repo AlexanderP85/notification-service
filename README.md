@@ -18,23 +18,21 @@
 ## 🚀 Запуск проекта
 
 ### 1. Клонировать репозиторий
-git clone <repository-url>
+git clone https://github.com/AlexanderP85/notification-service.git
 cd notification-service
 
 ### 2. Настроить окружение
 cp .env.example .env
-docker compose run --rm php-fpm php artisan key:generate
 
-### 3. Собрать и запустить контейнеры
+### 3. Собрать, запустить контейнеры и выполнить миграции
+make init
+
+### (альтернатива)3. Собрать, запустить контейнеры и выполнить миграции
 docker compose build --no-cache
 docker compose up -d
-docker compose ps
-
-### 4. Выполнить миграции
+docker run --rm -v $(pwd):/app -w /app \composer install --ignore-platform-req=ext-sockets
 docker compose exec php-fpm php artisan migrate --force
-
-### 5. Проверить API
-curl -X POST http://localhost/api/notifications -H "Content-Type: application/json" -d '{"channel":"sms","message":"Test","recipient_ids":["+79991234567"],"priority":"high"}'
+docker compose exec php-fpm chmod -R 777 storage bootstrap/cache
 
 ## 🧪 Запуск тестов
 docker compose exec php-fpm php artisan test
