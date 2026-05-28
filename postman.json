@@ -1,0 +1,285 @@
+{
+    "info": {
+        "name": "Notification Service API",
+        "description": "Микросервис для массовой рассылки SMS и Email-уведомлений с поддержкой приоритетов",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Notifications",
+            "item": [
+                {
+                    "name": "Send SMS (High Priority)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{idempotency_key}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"sms\",\n    \"message\": \"Your verification code: 123456\",\n    \"recipient_ids\": [\"+79991234567\", \"+79997654321\"],\n    \"priority\": \"high\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                },
+                {
+                    "name": "Send SMS (Medium Priority)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"sms\",\n    \"message\": \"Weekly newsletter with updates\",\n    \"recipient_ids\": [\"+79991111111\", \"+79992222222\"],\n    \"priority\": \"medium\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                },
+                {
+                    "name": "Send SMS (Low Priority)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"sms\",\n    \"message\": \"Special offer! 20% discount for you!\",\n    \"recipient_ids\": [\"+79993333333\", \"+79994444444\", \"+79995555555\"],\n    \"priority\": \"low\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                },
+                {
+                    "name": "Send Email (High Priority)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"email\",\n    \"message\": \"Important: Your account needs attention\",\n    \"recipient_ids\": [\"user1@example.com\", \"user2@example.com\"],\n    \"priority\": \"high\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                },
+                {
+                    "name": "Send Bulk (100 recipients)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"sms\",\n    \"message\": \"Bulk promotional message\",\n    \"recipient_ids\": [\"+79990000001\", \"+79990000002\", \"+79990000003\", \"+79990000004\", \"+79990000005\"],\n    \"priority\": \"low\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "History",
+            "item": [
+                {
+                    "name": "Get History by Phone",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications/recipient/+79991234567",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications", "recipient", "+79991234567"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get History by Email",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications/recipient/user1@example.com",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications", "recipient", "user1@example.com"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Idempotency Test",
+            "item": [
+                {
+                    "name": "First Request (with Idempotency-Key)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "test-key-123"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"sms\",\n    \"message\": \"Idempotency test message\",\n    \"recipient_ids\": [\"+79991234567\"],\n    \"priority\": \"high\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                },
+                {
+                    "name": "Duplicate Request (same Idempotency-Key)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "test-key-123"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"sms\",\n    \"message\": \"This different message should be ignored\",\n    \"recipient_ids\": [\"+79991234567\"],\n    \"priority\": \"high\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Validation Errors",
+            "item": [
+                {
+                    "name": "Invalid Channel",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"invalid\",\n    \"message\": \"Test\",\n    \"recipient_ids\": [\"+79991234567\"],\n    \"priority\": \"high\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                },
+                {
+                    "name": "Invalid Priority",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"sms\",\n    \"message\": \"Test\",\n    \"recipient_ids\": [\"+79991234567\"],\n    \"priority\": \"invalid\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                },
+                {
+                    "name": "Empty Recipients",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"channel\": \"sms\",\n    \"message\": \"Test\",\n    \"recipient_ids\": [],\n    \"priority\": \"high\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/notifications",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "notifications"]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost"
+        },
+        {
+            "key": "idempotency_key",
+            "value": "{{$timestamp}}-{{$randomUUID}}"
+        }
+    ]
+}

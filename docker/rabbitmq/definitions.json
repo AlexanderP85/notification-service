@@ -1,0 +1,83 @@
+{
+    "rabbit_version": "3.13.0",
+    "users": [
+        {
+            "name": "guest",
+            "password_hash": "guest",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "tags": "administrator"
+        }
+    ],
+    "vhosts": [
+        {
+            "name": "/"
+        }
+    ],
+    "permissions": [
+        {
+            "user": "guest",
+            "vhost": "/",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        }
+    ],
+    "queues": [
+        {
+            "name": "notifications.high",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false
+        },
+        {
+            "name": "notifications.medium",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false
+        },
+        {
+            "name": "notifications.low",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false
+        },
+        {
+            "name": "notifications.dlq",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false
+        }
+    ],
+    "exchanges": [
+        {
+            "name": "notifications.direct",
+            "vhost": "/",
+            "type": "direct",
+            "durable": true,
+            "auto_delete": false
+        }
+    ],
+    "bindings": [
+        {
+            "source": "notifications.direct",
+            "vhost": "/",
+            "destination": "notifications.high",
+            "destination_type": "queue",
+            "routing_key": "high"
+        },
+        {
+            "source": "notifications.direct",
+            "vhost": "/",
+            "destination": "notifications.medium",
+            "destination_type": "queue",
+            "routing_key": "medium"
+        },
+        {
+            "source": "notifications.direct",
+            "vhost": "/",
+            "destination": "notifications.low",
+            "destination_type": "queue",
+            "routing_key": "low"
+        }
+    ]
+}
