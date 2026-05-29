@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Models\Notification;
-use App\Services\Providers\SmsProviderInterface;
 use App\Services\Providers\EmailProviderInterface;
+use App\Services\Providers\SmsProviderInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,7 +16,9 @@ class SendNotificationJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, SerializesModels;
 
     public $tries = 3;
-    public $backoff = [5, 30, 120];
+
+    public $backoff = [5, 30];
+
     public $queue = null;
 
     public function __construct(protected Notification $notification) {}
@@ -24,6 +26,7 @@ class SendNotificationJob implements ShouldQueue
     public function onQueue($queue): static
     {
         $this->queue = $queue;
+
         return $this;
     }
 
@@ -63,7 +66,6 @@ class SendNotificationJob implements ShouldQueue
                 'status' => 'delivered',
                 'delivered_at' => now(),
                 'provider_response' => $response,
-                'retry_count' => $this->attempts(),
             ]);
 
             Log::info('✅ 4. Статус обновлён на delivered', ['id' => $this->notification->id]);
@@ -77,13 +79,12 @@ class SendNotificationJob implements ShouldQueue
             $isPermanent = $this->isPermanentError($e->getMessage());
 
             if ($isPermanent || $this->attempts() >= $this->tries) {
-                $finalStatus = $isPermanent ? 'rejected' : 'failed';
-
                 $this->notification->update([
-                    'status' => $finalStatus,
+                    'status' => 'failed',
                     'failed_at' => now(),
                     'provider_response' => $e->getMessage(),
                 ]);
+
                 return;
             }
 

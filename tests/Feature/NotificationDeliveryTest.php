@@ -6,6 +6,7 @@ use App\Models\Notification;
 use App\Services\Providers\SmsProviderInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class NotificationDeliveryTest extends TestCase
@@ -20,7 +21,7 @@ class NotificationDeliveryTest extends TestCase
         // Мокаем провайдера для успешной отправки
         $this->mock(SmsProviderInterface::class, function ($mock) {
             $mock->shouldReceive('send')
-                ->andReturn('sms_test_' . uniqid());
+                ->andReturn('sms_test_'.uniqid());
         });
     }
 
@@ -105,7 +106,7 @@ class NotificationDeliveryTest extends TestCase
 
     public function test_idempotency_with_same_key_returns_cached_response(): void
     {
-        $idempotencyKey = 'test-idempotency-' . uniqid();
+        $idempotencyKey = 'test-idempotency-'.uniqid();
 
         $firstResponse = $this->postJson('/api/notifications', [
             'channel' => 'sms',
@@ -157,7 +158,7 @@ class NotificationDeliveryTest extends TestCase
         // Создаём тестовые данные
         for ($i = 0; $i < 3; $i++) {
             Notification::create([
-                'id' => (string) \Illuminate\Support\Str::uuid(),
+                'id' => (string) Str::uuid(),
                 'recipient_id' => '+79991234567',
                 'channel' => 'sms',
                 'message' => "History test message {$i}",
@@ -176,8 +177,8 @@ class NotificationDeliveryTest extends TestCase
             'recipient_id',
             'total',
             'notifications' => [
-                ['id', 'channel', 'message', 'status', 'created_at']
-            ]
+                ['id', 'channel', 'message', 'status', 'created_at'],
+            ],
         ]);
 
         $this->assertEquals(3, $response->json('total'));

@@ -11,6 +11,6 @@ class EmailProviderMock implements EmailProviderInterface
             throw new \Exception('Provider temporary unavailable');
         }
 
-        return 'email_' . uniqid();
+        return 'email_'.uniqid();
     }
 }

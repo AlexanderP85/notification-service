@@ -8,7 +8,7 @@ class SmsProviderMock implements SmsProviderInterface
 
     public function send(string $phone, string $message): string
     {
-        $messageId = 'sms_' . uniqid();
+        $messageId = 'sms_'.uniqid();
 
         // Симулируем задержку доставки
         $this->statuses[$messageId] = [
@@ -21,7 +21,7 @@ class SmsProviderMock implements SmsProviderInterface
 
     public function getStatus(string $messageId): string
     {
-        if (!isset($this->statuses[$messageId])) {
+        if (! isset($this->statuses[$messageId])) {
             return 'failed';
         }
 

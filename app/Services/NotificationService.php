@@ -26,7 +26,7 @@ class NotificationService
                 'status' => 'queued',
             ]);
 
-            dispatch(new SendNotificationJob($notification)->onQueue("notifications.{$priority}"));
+            dispatch((new SendNotificationJob($notification))->onQueue("notifications.{$priority}"));
 
             $notifications[] = $notification;
         }

@@ -44,7 +44,7 @@ class NotificationController extends Controller
 
         $result = [
             'status' => 'accepted',
-            'notifications' => collect($notifications)->map(fn($n) => [
+            'notifications' => collect($notifications)->map(fn ($n) => [
                 'id' => $n->id,
                 'recipient_id' => $n->recipient_id,
                 'status' => $n->status,
@@ -82,14 +82,14 @@ class NotificationController extends Controller
             return response()->json([
                 'message' => 'No notifications found for this recipient',
                 'recipient_id' => $recipientId,
-                'notifications' => []
+                'notifications' => [],
             ], 200);
         }
 
         return response()->json([
             'recipient_id' => $recipientId,
             'total' => $notifications->count(),
-            'notifications' => $notifications
+            'notifications' => $notifications,
         ]);
     }
 }

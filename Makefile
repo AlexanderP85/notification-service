@@ -63,10 +63,7 @@ rabbitmq-queues: ## Создать очереди RabbitMQ
 	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare queue name=notifications.high durable=true 2>/dev/null
 	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare queue name=notifications.medium durable=true 2>/dev/null
 	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare queue name=notifications.low durable=true 2>/dev/null
-	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare queue name=notifications.retry.high durable=true 2>/dev/null
-	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare queue name=notifications.retry.medium durable=true 2>/dev/null
-	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare queue name=notifications.retry.low durable=true 2>/dev/null
-	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare queue name=notifications.dlq durable=true 2>/dev/null
+
 	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare exchange name=notifications.direct type=direct durable=true 2>/dev/null
 	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare binding source=notifications.direct destination=notifications.high routing_key=high 2>/dev/null
 	-$(DOCKER_COMPOSE) exec rabbitmq rabbitmqadmin declare binding source=notifications.direct destination=notifications.medium routing_key=medium 2>/dev/null

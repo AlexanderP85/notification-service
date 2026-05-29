@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use App\Services\Providers\SmsProviderInterface;
-use App\Services\Providers\SmsProviderMock;
 use App\Services\Providers\EmailProviderInterface;
 use App\Services\Providers\EmailProviderMock;
+use App\Services\Providers\SmsProviderInterface;
+use App\Services\Providers\SmsProviderMock;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
